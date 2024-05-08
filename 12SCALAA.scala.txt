@@ -1,0 +1,37 @@
+\\Run
+spark-shell
+import org.apache.spark.sql.SparkSession
+
+object EvenOddNumbers {
+  def main(args: Array[String]): Unit = {
+    // Create SparkSession
+    val spark = SparkSession.builder()
+      .appName("EvenOddNumbers")
+      .master("local[*]")
+      .getOrCreate()
+
+    // Create RDD from a list of numbers
+    val numbers = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val numbersRDD = spark.sparkContext.parallelize(numbers)
+
+    // Filter even and odd numbers
+    val evenNumbersRDD = numbersRDD.filter(_ % 2 == 0)
+    val oddNumbersRDD = numbersRDD.filter(_ % 2 != 0)
+
+    // Collect and print even numbers
+    println("Even numbers:")
+    evenNumbersRDD.collect().foreach(println)
+
+    // Collect and print odd numbers
+    println("Odd numbers:")
+    oddNumbersRDD.collect().foreach(println)
+
+    // Stop SparkSession
+    spark.stop()
+  }
+}
+
+
+
+
+EvenOddNumbers.main(Array())
